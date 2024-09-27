@@ -17,11 +17,15 @@ class SensorInline(admin.TabularInline):
 class CornerAdmin(admin.ModelAdmin):
     inlines = [SensorInline]
     exclude = ["owner"]
-    readonly_fields = ["score"]
+    readonly_fields = ["score", "price_factor"]
 
     @admin.display(description="Wert (dBA)")
     def score(self, obj):
         return obj.score
+
+    @admin.display(description="Preisfaktor")
+    def price_factor(self, obj):
+        return obj.price_factor
 
     def save_model(self, request, obj, form, change):
         obj.owner = request.user

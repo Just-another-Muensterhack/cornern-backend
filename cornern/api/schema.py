@@ -6,6 +6,7 @@ class CornersOut(Schema):
     name: str
     position: tuple[float, float]
     noiseValue: float = Field(..., alias="score")
+    priceFactor: float = Field(..., alias="price_factor")
 
     @staticmethod
     def resolve_position(obj):
@@ -17,6 +18,7 @@ class CornerOut(Schema):
     name: str
     position: tuple[float, float]
     noiseValue: float = Field(..., alias="score")
+    priceFactor: float = Field(..., alias="price_factor")
     description: str
 
     @staticmethod
