@@ -1,3 +1,4 @@
+import base64
 from uuid import uuid4
 
 from django.contrib.auth.models import User
@@ -6,7 +7,7 @@ from django.db import models
 
 class Corner(models.Model):  # score
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     lat = models.DecimalField(max_digits=9, decimal_places=6, null=True)
     lon = models.DecimalField(max_digits=9, decimal_places=6, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -14,6 +15,10 @@ class Corner(models.Model):  # score
 
     def __str__(self):
         return self.name
+
+    @property
+    def score(self):
+        return 0
 
 
 class Sensor(models.Model):  # Secret
@@ -24,6 +29,10 @@ class Sensor(models.Model):  # Secret
 
     def __str__(self):
         return self.name
+
+    @property
+    def secret(self):
+        return base64.b64encode(f"{self.name}:{self.token}".encode()).decode("utf-8")
 
 
 class Measurement(models.Model):
