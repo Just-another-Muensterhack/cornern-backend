@@ -1,0 +1,9 @@
+.devcontainer
+.ruff_cache
+.venv
+.vscode
+.gitignore
+.pre-commit-config.yaml
+.ruff.toml
+LICENSE
+README.md
