@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 import base64
-from datetime import datetime, timedelta
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
@@ -25,13 +26,7 @@ class Corner(models.Model):
 
     @property
     def score(self):
-        return (
-            Measurement.objects.filter(
-                sensor__corner=self,
-                created_at__gte=datetime.now() - timedelta(minutes=30),
-            ).aggregate(models.Avg("value"))["value__avg"]
-            or 0
-        )
+        return MeasurementService.get_service().get_intervall(self, 1, "5min", 1)[0].get("value", 40)
 
     @property
     def price_factor(self):
@@ -98,3 +93,6 @@ class Feedback(models.Model):
     @property
     def timestamp(self):
         return self.created_at.astimezone(ZoneInfo("CET")).strftime("%d.%m.%Y %H:%M:%S")
+
+
+from .service import MeasurementService  # noqa
