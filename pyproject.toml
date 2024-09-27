@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "cornern-backend"
+description = "API for the corner app"
+version = "1.0.71"
+license = "MIT"
+authors = ["MSHack"]
+readme = "README.md"
+homepage = "https://github.com/Just-another-Muensterhack/"
+repository = "https://github.com/Just-another-Muensterhack/cornern-backend"
+documentation = "https://github.com/Just-another-Muensterhack/cornern-backend/wiki"
+keywords = ["API"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.urls]
+Changelog = "https://github.com/Just-another-Muensterhack/cornern-backend"
+Bugtracker = "https://github.com/Just-another-Muensterhack/cornern-backend/issues"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.8.0"
+pytest = "^8.0.2"
+coverage = "^7.4.0"
+pytest-cov = ">=4.1,<6.0"
+ruff = ">=0.5.0,<0.7"
+pytest-asyncio = ">=0.23.3,<0.25.0"
+pytest-recording = "^0.13.1"
+pytest-mock = "^3.14.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+strict_optional = true
+
+[tool.pytest.ini_options]
+python_files = ["test_*.py", "*_test.py"]
+filterwarnings = ["ignore::DeprecationWarning"]
+asyncio_mode = "auto"
+addopts = [
+    "--rootdir=./test",
+    "--cov-branch",
+    "--cov=src",
+    "--cov-report=xml",
+    "--import-mode=importlib",
+    "--random-order",
+]
