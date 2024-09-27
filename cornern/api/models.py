@@ -30,7 +30,7 @@ class Corner(models.Model):
 
     @property
     def price_factor(self):
-        return 0
+        return MeasurementService.get_service().get_intervall(self, 1, "5min", 1)[0].get("price_factor", 40)
 
 
 class Sensor(models.Model):

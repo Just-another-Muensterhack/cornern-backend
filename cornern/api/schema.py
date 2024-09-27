@@ -18,6 +18,7 @@ class CornersOut(Schema):
 class ValueOut(Schema):
     timestamp: str
     value: float
+    price_factor: float
 
 
 class CornerOut(Schema):
@@ -46,3 +47,8 @@ class CornerOut(Schema):
     @staticmethod
     def resolve_noise_value_week(obj):
         return MeasurementService.get_service().get_intervall(obj, 168, "1d", 7)
+
+
+class MeasurementIn(Schema):
+    value: int
+    prediction: float

@@ -18,4 +18,11 @@ class MeasurementService:
 
         df = pd.DataFrame(m_qs).set_index("created_at").resample(frequency).mean().round(1).tail(count)
 
-        return [{"timestamp": t.isoformat(), "value": v} for t, v in df.to_dict().get("value", {}).items()]
+        return [
+            {
+                "timestamp": t.isoformat(),
+                "value": v,
+                "price_factor": round(min(max(0.0216667 * v - -0.1668, 0.7), 2.0), 1),
+            }
+            for t, v in df.to_dict().get("value", {}).items()
+        ]
