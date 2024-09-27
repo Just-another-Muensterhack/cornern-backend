@@ -1,6 +1,7 @@
 import base64
 from datetime import datetime, timedelta
 from uuid import uuid4
+from zoneinfo import ZoneInfo
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -14,8 +15,8 @@ class Corner(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.TextField(verbose_name="Beschreibung", null=True, blank=True)
-    lat = models.DecimalField(verbose_name="Breitengrat", max_digits=9, decimal_places=6, null=True)
-    lon = models.DecimalField(verbose_name="Längengrat", max_digits=9, decimal_places=6, null=True)
+    lat = models.DecimalField(verbose_name="Breitengrad", max_digits=9, decimal_places=6, null=True)
+    lon = models.DecimalField(verbose_name="Längengrad", max_digits=9, decimal_places=6, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -62,7 +63,11 @@ class Measurement(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Value: {self.value} - prediction: {self.prediction}"
+        return f"{self.timestamp} - Wert: {self.value}"
+
+    @property
+    def timestamp(self):
+        return self.created_at.astimezone(ZoneInfo("CET")).strftime("%d.%m.%Y %H:%M:%S")
 
 
 class Feedback(models.Model):
@@ -84,4 +89,8 @@ class Feedback(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.subject
+        return f"{self.timestamp} - Thema: {self.subject}"
+
+    @property
+    def timestamp(self):
+        return self.created_at.astimezone(ZoneInfo("CET")).strftime("%d.%m.%Y %H:%M:%S")

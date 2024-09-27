@@ -2,6 +2,10 @@ from django.contrib import admin
 
 from .models import Corner, Feedback, Measurement, Sensor
 
+admin.site.site_header = "Cornern Admin"
+admin.site.index_title = "Cornern Admin"
+admin.site.site_title = "Cornern Admin"
+
 
 class SensorInline(admin.TabularInline):
     model = Sensor
@@ -33,6 +37,8 @@ class CornerAdmin(admin.ModelAdmin):
 
 @admin.register(Measurement)
 class MeasurementAdmin(admin.ModelAdmin):
+    readonly_fields = ["timestamp"]
+
     def get_queryset(self, request):
         qs = super(MeasurementAdmin, self).get_queryset(request)
         if request.user.is_superuser:
@@ -47,6 +53,8 @@ class MeasurementAdmin(admin.ModelAdmin):
 
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
+    readonly_fields = ["timestamp"]
+
     def get_queryset(self, request):
         qs = super(FeedbackAdmin, self).get_queryset(request)
         if request.user.is_superuser:
