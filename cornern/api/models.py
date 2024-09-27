@@ -33,6 +33,10 @@ class Corner(models.Model):
             or 0
         )
 
+    @property
+    def price_factor(self):
+        return 0
+
 
 class Sensor(models.Model):
     class Meta:

@@ -19,6 +19,10 @@ class CornerAdmin(admin.ModelAdmin):
     exclude = ["owner"]
     readonly_fields = ["score"]
 
+    @admin.display(description="Wert (dBA)")
+    def score(self, obj):
+        return obj.score
+
     def save_model(self, request, obj, form, change):
         obj.owner = request.user
         super().save_model(request, obj, form, change)
@@ -39,6 +43,10 @@ class CornerAdmin(admin.ModelAdmin):
 class MeasurementAdmin(admin.ModelAdmin):
     readonly_fields = ["timestamp"]
 
+    @admin.display(description="Zeitstempel")
+    def timestamp(self, obj):
+        return obj.timestamp
+
     def get_queryset(self, request):
         qs = super(MeasurementAdmin, self).get_queryset(request)
         if request.user.is_superuser:
@@ -54,6 +62,10 @@ class MeasurementAdmin(admin.ModelAdmin):
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ["timestamp"]
+
+    @admin.display(description="Zeitstempel")
+    def timestamp(self, obj):
+        return obj.timestamp
 
     def get_queryset(self, request):
         qs = super(FeedbackAdmin, self).get_queryset(request)
