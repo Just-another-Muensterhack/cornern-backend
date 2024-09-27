@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Corner(models.Model):  # Coor, score
+class Corner(models.Model):  # score
     name = models.CharField(max_length=100)
     description = models.TextField()
     lat = models.DecimalField(max_digits=9, decimal_places=6, null=True)
@@ -16,7 +16,7 @@ class Corner(models.Model):  # Coor, score
         return self.name
 
 
-class Sensor(models.Model):
+class Sensor(models.Model):  # Secret
     name = models.CharField(max_length=100)
     corner = models.ForeignKey(Corner, on_delete=models.CASCADE)
     token = models.UUIDField(default=uuid4)
