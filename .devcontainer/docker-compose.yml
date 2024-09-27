@@ -2,8 +2,12 @@ version: '3.8'
 
 services:
   services:
-    container_name: shopware-api-client
+    container_name: service
+    ports:
+      - "8000:8000"
     init: true
+    env_file:
+      - .env
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
@@ -19,8 +23,11 @@ services:
     command: sleep infinity
 
   postgres:
+    container_name: postgres
     image: postgres
     restart: always
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: corner
       POSTGRES_USER: corner
