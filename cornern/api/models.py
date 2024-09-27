@@ -24,13 +24,22 @@ class Corner(models.Model):
     def __str__(self):
         return self.name
 
+    def _get_last_masurement(self):
+        return MeasurementService.get_service().get_intervall(self, 1, "5min", 1)
+
     @property
     def score(self):
-        return MeasurementService.get_service().get_intervall(self, 1, "5min", 1)[0].get("value", 40)
+        m = self._get_last_masurement()
+        if m:
+            return m[0].get("value", 40)
+        return 40
 
     @property
     def price_factor(self):
-        return MeasurementService.get_service().get_intervall(self, 1, "5min", 1)[0].get("price_factor", 40)
+        m = self._get_last_masurement()
+        if m:
+            return m[0].get("price_factor", 1)
+        return 1
 
 
 class Sensor(models.Model):
@@ -48,7 +57,7 @@ class Sensor(models.Model):
 
     @property
     def secret(self):
-        return base64.b64encode(f"{self.name}:{self.token}".encode()).decode("utf-8")
+        return f"Basic: {base64.b64encode(f"{self.name}:{self.token}".encode()).decode("utf-8")}"
 
 
 class Measurement(models.Model):

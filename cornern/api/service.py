@@ -16,7 +16,17 @@ class MeasurementService:
             sensor__corner=corner,
         ).values("created_at", "value")
 
-        df = pd.DataFrame(m_qs).set_index("created_at").resample(frequency).mean().round(1).tail(count)
+        if len(m_qs) == 0:
+            return []
+
+        df = (
+            pd.DataFrame(m_qs, columns=["created_at", "value"])
+            .set_index("created_at")
+            .resample(frequency)
+            .mean()
+            .round(1)
+            .tail(count)
+        )
 
         return [
             {
