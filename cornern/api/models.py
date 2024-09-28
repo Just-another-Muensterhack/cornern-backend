@@ -59,8 +59,8 @@ class Corner(models.Model):
     def price_factor(self):
         m = MeasurementService.get_service().get_intervall(self, 1, "5min", 1)
         if m:
-            return m[0].get("price_factor", 1)
-        return 1
+            return m[0].get("price_factor", 0.7)
+        return 0.7
 
 
 class Sensor(models.Model):
