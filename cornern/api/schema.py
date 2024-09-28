@@ -7,8 +7,8 @@ class CornersOut(Schema):
     id: int
     name: str
     position: tuple[float, float]
-    noiseValue: float = Field(..., alias="score")
-    priceFactor: float = Field(..., alias="price_factor")
+    noise_value: float = Field(..., alias="score")
+    price_factor: float
 
     @staticmethod
     def resolve_position(obj):

@@ -16,8 +16,8 @@ class Corner(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.TextField(verbose_name="Beschreibung", null=True, blank=True)
-    lat = models.DecimalField(verbose_name="Breitengrad", max_digits=9, decimal_places=6, null=True)
-    lon = models.DecimalField(verbose_name="Längengrad", max_digits=9, decimal_places=6, null=True)
+    lat = models.DecimalField(verbose_name="Breitengrad", max_digits=20, decimal_places=18, null=True)
+    lon = models.DecimalField(verbose_name="Längengrad", max_digits=20, decimal_places=18, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -57,7 +57,7 @@ class Sensor(models.Model):
 
     @property
     def secret(self):
-        return f"Basic: {base64.b64encode(f"{self.name}:{self.token}".encode()).decode("utf-8")}"
+        return f"Basic {base64.b64encode(f"{self.name}:{self.token}".encode()).decode("utf-8")}"
 
 
 class Measurement(models.Model):
