@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import base64
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
@@ -31,6 +31,7 @@ class Corner(models.Model):
         greater = (
             Measurement.objects.filter(
                 created_at__gte=dt,
+                created_at__lte=dt + timedelta(minutes=5),
                 sensor__corner=self,
             )
             .order_by("created_at")
@@ -39,6 +40,7 @@ class Corner(models.Model):
         less = (
             Measurement.objects.filter(
                 created_at__lte=dt,
+                created_at__gte=dt - timedelta(minutes=5),
                 sensor__corner=self,
             )
             .order_by("-created_at")
