@@ -2,7 +2,8 @@ from ninja import NinjaAPI
 from ninja.security import HttpBasicAuth
 
 from .models import Corner, Measurement, Sensor
-from .schema import CornerOut, CornersOut, MeasurementIn
+from .schema import CornerOut, CornersOut, MeasurementIn, NextOut
+from .service import MeasurementService
 
 api = NinjaAPI()
 
@@ -22,6 +23,11 @@ def corners(request):
 @api.get("/corner/{corner_id}", response=CornerOut)
 def corner(request, corner_id: int):
     return Corner.objects.get(id=corner_id)
+
+
+@api.get("/next", response=NextOut)
+def corner_next(request):
+    return {"timestamp": MeasurementService.get_service().get_next()}
 
 
 @api.post("/measurement", auth=SensorBasicAuth())

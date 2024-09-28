@@ -49,6 +49,11 @@ class CornerOut(Schema):
         return MeasurementService.get_service().get_intervall(obj, 168, "1d", 7)
 
 
+class NextOut(Schema):
+    timestamp: str
+    frequency: int = 5
+
+
 class MeasurementIn(Schema):
     value: int
     prediction: float

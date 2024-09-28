@@ -38,3 +38,8 @@ class MeasurementService:
             }
             for t, v in df.to_dict().get("value", {}).items()
         ]
+
+    def get_next(self):
+        dt = datetime.now(timezone.utc).replace(second=0, microsecond=0)
+        mins = dt.minute // 5 * 5
+        return (dt.replace(minute=mins) + timedelta(minutes=5)).isoformat()
