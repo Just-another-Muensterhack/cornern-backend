@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+from datetime import datetime, timezone
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
@@ -24,19 +25,37 @@ class Corner(models.Model):
     def __str__(self):
         return self.name
 
-    def _get_last_masurement(self):
-        return MeasurementService.get_service().get_intervall(self, 1, "5min", 1)
-
     @property
     def score(self):
-        m = self._get_last_masurement()
-        if m:
-            return m[0].get("value", 40)
+        dt = datetime.now(timezone.utc)
+        greater = (
+            Measurement.objects.filter(
+                created_at__gte=dt,
+                sensor__corner=self,
+            )
+            .order_by("created_at")
+            .first()
+        )
+        less = (
+            Measurement.objects.filter(
+                created_at__lte=dt,
+                sensor__corner=self,
+            )
+            .order_by("-created_at")
+            .first()
+        )
+
+        if greater and less:
+            return (greater if abs(greater.created_at - dt) < abs(less.created_at - dt) else less).value
+        if greater:
+            return greater.value
+        if less:
+            return less.value
         return 40
 
     @property
     def price_factor(self):
-        m = self._get_last_masurement()
+        m = MeasurementService.get_service().get_intervall(self, 1, "5min", 1)
         if m:
             return m[0].get("price_factor", 1)
         return 1
