@@ -68,7 +68,7 @@ class Measurement(models.Model):
     value = models.IntegerField(verbose_name="Wert (dBA)")
     prediction = models.FloatField(verbose_name="Vorhersage")
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.timestamp} - Wert: {self.value} dBA"
